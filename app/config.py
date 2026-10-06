@@ -2,7 +2,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    #define configuration fields
     app_name: str
     app_version: str
 
@@ -12,6 +11,8 @@ class Settings(BaseSettings):
 
     webhook_url: str = ""
 
+    api_key: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -19,4 +20,4 @@ class Settings(BaseSettings):
     )
 
 
-settings = Settings()  #Create settings object
+settings = Settings()

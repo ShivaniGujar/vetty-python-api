@@ -1,9 +1,8 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, HTTPException, Query, Security
 
 from app.config import settings
+from app.security import verify_api_key
 from app.services.coingecko_service import CoinGeckoService
-from fastapi import FastAPI, HTTPException, Query
-
 
 app = FastAPI(
     title=settings.app_name,
@@ -23,7 +22,8 @@ def health():
 @app.get("/coins")
 async def get_coins(
     page_num: int = Query(default=1, ge=1),
-    per_page: int = Query(default=10, ge=1)
+    per_page: int = Query(default=10, ge=1),
+    api_key: str = Security(verify_api_key)
 ):
     service = CoinGeckoService()
 
@@ -35,10 +35,13 @@ async def get_coins(
     return coins[start:end]
 
 
+
+
 @app.get("/categories")
 async def get_categories(
     page_num: int = Query(default=1, ge=1),
-    per_page: int = Query(default=10, ge=1)
+    per_page: int = Query(default=10, ge=1),
+    api_key: str = Security(verify_api_key)
 ):
     service = CoinGeckoService()
 
@@ -49,12 +52,14 @@ async def get_categories(
 
     return categories[start:end]
 
+
 @app.get("/market-data")
 async def get_market_data(
     coin_id: str | None = Query(default=None),
     category: str | None = Query(default=None),
     page_num: int = Query(default=1, ge=1),
-    per_page: int = Query(default=10, ge=1)
+    per_page: int = Query(default=10, ge=1),
+    api_key: str = Security(verify_api_key)
 ):
     if not coin_id and not category:
         raise HTTPException(
@@ -73,3 +78,4 @@ async def get_market_data(
     end = start + per_page
 
     return market_data[start:end]
+
