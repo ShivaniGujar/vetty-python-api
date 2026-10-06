@@ -32,3 +32,18 @@ async def get_coins(
     end = start + per_page
 
     return coins[start:end]
+
+
+@app.get("/categories")
+async def get_categories(
+    page_num: int = Query(default=1, ge=1),
+    per_page: int = Query(default=10, ge=1)
+):
+    service = CoinGeckoService()
+
+    categories = await service.get_categories()
+
+    start = (page_num - 1) * per_page
+    end = start + per_page
+
+    return categories[start:end]
