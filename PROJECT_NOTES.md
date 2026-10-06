@@ -110,3 +110,23 @@ Current response:
 {
     "status": "healthy"
 }
+
+# Project Structure
+
+The project uses an `app` package to keep application code
+separate from tests and project configuration.
+
+Current structure:
+
+```text
+vetty-python-api/
+│
+├── app/
+│   ├── __init__.py
+│   └── main.py
+│
+├── tests/
+│
+├── .gitignore
+├── PROJECT_NOTES.md
+└── requirements.txt
