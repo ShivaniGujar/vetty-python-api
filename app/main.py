@@ -1,8 +1,18 @@
+from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException, Query, Security
 
 from app.config import settings
 from app.security import verify_api_key
 from app.services.coingecko_service import CoinGeckoService
+
+class CoinResponse(BaseModel):
+    id: str
+    name: str
+    symbol: str
+
+class CategoryResponse(BaseModel):
+    category_id: str
+    name: str
 
 app = FastAPI(
     title=settings.app_name,
@@ -19,10 +29,10 @@ def health():
     }
 
 
-@app.get("/coins")
+@app.get("/coins", response_model=list[CoinResponse])
 async def get_coins(
     page_num: int = Query(default=1, ge=1),
-    per_page: int = Query(default=10, ge=1),
+    per_page: int = Query(default=10, ge=1,le=100),
     api_key: str = Security(verify_api_key)
 ):
     service = CoinGeckoService()
@@ -37,10 +47,13 @@ async def get_coins(
 
 
 
-@app.get("/categories")
+@app.get(
+    "/categories",
+    response_model=list[CategoryResponse]
+)
 async def get_categories(
     page_num: int = Query(default=1, ge=1),
-    per_page: int = Query(default=10, ge=1),
+    per_page: int = Query(default=10, ge=1, le=100),
     api_key: str = Security(verify_api_key)
 ):
     service = CoinGeckoService()
@@ -55,10 +68,10 @@ async def get_categories(
 
 @app.get("/market-data")
 async def get_market_data(
-    coin_id: str | None = Query(default=None),
-    category: str | None = Query(default=None),
+    coin_id: str | None = Query(default=None, min_length=1),
+    category: str | None = Query(default=None, min_length=1),
     page_num: int = Query(default=1, ge=1),
-    per_page: int = Query(default=10, ge=1),
+    per_page: int = Query(default=10, ge=1, le=100),
     api_key: str = Security(verify_api_key)
 ):
     if not coin_id and not category:
