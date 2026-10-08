@@ -435,27 +435,6 @@ Pagination is applied after retrieving the relevant data from the external servi
 
 ---
 
-## Development Approach
-
-The project is being developed incrementally.
-
-Each meaningful feature is implemented, tested, and committed separately to maintain a clear Git history.
-
-Example commit progression:
-
-```text
-Initial project setup
-Create project structure
-Add environmental based configuration
-Add CoinGecko API integration
-Add categories endpoint
-Add market data endpoint
-Add authentication
-Add request and response validation
-Add external API error handling
-...
-```
-
 This makes the development process easier to review and understand.
 
 ---
