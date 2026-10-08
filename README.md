@@ -476,7 +476,6 @@ This makes the development process easier to review and understand.
 
 Tests will be added and expanded as part of the testing stage.
 
-The target is to provide meaningful unit-test coverage for the API and service layers, with a goal of exceeding 80% coverage where practical.
 
 ---
 
@@ -505,7 +504,3 @@ The remaining implementation will focus on:
 * Sensitive configuration is not hardcoded in the application source code.
 
 ---
-
-## License
-
-This project was created as a technical assessment project.
