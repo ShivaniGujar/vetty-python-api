@@ -130,7 +130,7 @@ Example response:
 }
 ```
 
-The technical exercise requires the health endpoint to report application health and application version, as well as external cryptocurrency service information as the implementation is completed.
+The health endpoint currently reports the application status, name, and version.
 
 ---
 
@@ -244,7 +244,7 @@ X-API-Key: <your-api-key>
 Example:
 
 ```http
-X-API-Key: vetty-development-key
+X-API-Key: <your-api-key>
 ```
 
 The API key is stored in the environment configuration and is not committed to Git.
@@ -400,7 +400,7 @@ The application is designed to provide meaningful and consistent HTTP responses 
 * Timeouts
 * Other application errors
 
-Centralized exception handling is being implemented as part of the project's error-handling layer.
+Centralized exception handling is implemented to provide consistent HTTP responses for application and external-service failures.
 
 ---
 
@@ -433,12 +433,6 @@ The maximum supported page size is:
 
 Pagination is applied after retrieving the relevant data from the external service.
 
----
-
-This makes the development process easier to review and understand.
-
----
-
 ## Current Implementation Status
 
 ### Completed
@@ -457,10 +451,11 @@ This makes the development process easier to review and understand.
 * [x] External API timeout handling
 * [x] External API connection error handling
 * [x] External API HTTP error handling
+* [x] Centralized exception handling
 
 ### Remaining
 
-* [ ] Centralized exception handling
+
 * [ ] Structured logging
 * [ ] In-memory caching with configurable TTL
 * [ ] Webhook notification after successful uncached market-data retrieval
@@ -476,6 +471,7 @@ This makes the development process easier to review and understand.
 
 Tests will be added and expanded as part of the testing stage.
 
+The target is to provide meaningful unit-test coverage for the API and service layers, with a goal of exceeding 80% coverage where practical.
 
 ---
 
@@ -483,15 +479,14 @@ Tests will be added and expanded as part of the testing stage.
 
 The remaining implementation will focus on:
 
-1. Centralized exception handling
-2. Structured logging
-3. In-memory caching
-4. Webhook notifications
-5. Unit tests and coverage
-6. API documentation improvements
-7. Dockerization
-8. Linting and code-quality checks
-9. Final production-readiness review
+1. Structured logging
+2. In-memory caching
+3. Webhook notifications
+4. Unit tests and coverage
+5. API documentation improvements
+6. Dockerization
+7. Linting and code-quality checks
+8. Final production-readiness review
 
 ---
 
@@ -504,3 +499,7 @@ The remaining implementation will focus on:
 * Sensitive configuration is not hardcoded in the application source code.
 
 ---
+
+## License
+
+This project was created as a technical assessment project.

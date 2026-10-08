@@ -5,6 +5,10 @@ from app.config import settings
 from app.security import verify_api_key
 from app.services.coingecko_service import CoinGeckoService
 
+from app.exceptions.handlers import (
+    ExternalServiceError,
+    external_service_exception_handler
+)
 class CoinResponse(BaseModel):
     id: str
     name: str
@@ -18,7 +22,10 @@ app = FastAPI(
     title=settings.app_name,
     version=settings.app_version
 )
-
+app.add_exception_handler(
+    ExternalServiceError,
+    external_service_exception_handler
+)
 
 @app.get("/health")
 def health():

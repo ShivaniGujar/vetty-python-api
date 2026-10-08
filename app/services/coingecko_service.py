@@ -1,7 +1,7 @@
 import httpx
 
 from app.config import settings
-
+from app.exceptions.handlers import ExternalServiceError
 
 class CoinGeckoService:
     def __init__(self):
@@ -19,15 +19,15 @@ class CoinGeckoService:
             return response.json()
 
         except httpx.TimeoutException:
-            raise RuntimeError("CoinGecko request timed out")
+            raise ExternalServiceError("CoinGecko request timed out")
 
         except httpx.HTTPStatusError as exc:
-            raise RuntimeError(
+            raise ExternalServiceError(
                 f"CoinGecko returned HTTP {exc.response.status_code}"
             )
 
         except httpx.RequestError:
-            raise RuntimeError("Unable to connect to CoinGecko")
+            raise ExternalServiceError("Unable to connect to CoinGecko")
 
     async def get_categories(self):
         url = f"{self.base_url}/coins/categories/list"
@@ -41,15 +41,16 @@ class CoinGeckoService:
             return response.json()
 
         except httpx.TimeoutException:
-            raise RuntimeError("CoinGecko request timed out")
+            raise ExternalServiceError("CoinGecko request timed out")
+        
 
         except httpx.HTTPStatusError as exc:
-            raise RuntimeError(
+            raise ExternalServiceError(
                 f"CoinGecko returned HTTP {exc.response.status_code}"
             )
 
         except httpx.RequestError:
-            raise RuntimeError("Unable to connect to CoinGecko")
+            raise ExternalServiceError("Unable to connect to CoinGecko")
 
     async def get_market_data(self, coin_id=None, category=None):
         url = f"{self.base_url}/coins/markets"
@@ -73,12 +74,12 @@ class CoinGeckoService:
             return response.json()
 
         except httpx.TimeoutException:
-            raise RuntimeError("CoinGecko request timed out")
-
+            raise ExternalServiceError("CoinGecko request timed out")
+            
         except httpx.HTTPStatusError as exc:
-            raise RuntimeError(
+            raise ExternalServiceError(
                 f"CoinGecko returned HTTP {exc.response.status_code}"
             )
 
         except httpx.RequestError:
-            raise RuntimeError("Unable to connect to CoinGecko")
+            raise ExternalServiceError("Unable to connect to CoinGecko")
