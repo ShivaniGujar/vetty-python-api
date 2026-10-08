@@ -1,3 +1,10 @@
+import logging
+
+from fastapi import FastAPI
+
+from app.config import settings
+from app.logging_config import setup_logging
+
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException, Query, Security
 
@@ -18,6 +25,9 @@ class CategoryResponse(BaseModel):
     category_id: str
     name: str
 
+setup_logging()
+
+logger = logging.getLogger(__name__)
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_version
@@ -27,6 +37,13 @@ app.add_exception_handler(
     external_service_exception_handler
 )
 
+@app.on_event("startup")
+async def startup_event():
+    logger.info(
+        "Application started | app=%s | version=%s",
+        settings.app_name,
+        settings.app_version,
+    )
 @app.get("/health")
 def health():
     return {
