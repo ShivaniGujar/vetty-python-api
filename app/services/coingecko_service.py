@@ -10,22 +10,46 @@ class CoinGeckoService:
     async def get_coins(self):
         url = f"{self.base_url}/coins/list"
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url)
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(url)
 
-        response.raise_for_status()
+            response.raise_for_status()
 
-        return response.json()
+            return response.json()
+
+        except httpx.TimeoutException:
+            raise RuntimeError("CoinGecko request timed out")
+
+        except httpx.HTTPStatusError as exc:
+            raise RuntimeError(
+                f"CoinGecko returned HTTP {exc.response.status_code}"
+            )
+
+        except httpx.RequestError:
+            raise RuntimeError("Unable to connect to CoinGecko")
 
     async def get_categories(self):
         url = f"{self.base_url}/coins/categories/list"
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url)
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(url)
 
-        response.raise_for_status()
+            response.raise_for_status()
 
-        return response.json()
+            return response.json()
+
+        except httpx.TimeoutException:
+            raise RuntimeError("CoinGecko request timed out")
+
+        except httpx.HTTPStatusError as exc:
+            raise RuntimeError(
+                f"CoinGecko returned HTTP {exc.response.status_code}"
+            )
+
+        except httpx.RequestError:
+            raise RuntimeError("Unable to connect to CoinGecko")
 
     async def get_market_data(self, coin_id=None, category=None):
         url = f"{self.base_url}/coins/markets"
@@ -40,9 +64,21 @@ class CoinGeckoService:
         if category:
             params["category"] = category
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, params=params)
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(url, params=params)
 
-        response.raise_for_status()
+            response.raise_for_status()
 
-        return response.json()
+            return response.json()
+
+        except httpx.TimeoutException:
+            raise RuntimeError("CoinGecko request timed out")
+
+        except httpx.HTTPStatusError as exc:
+            raise RuntimeError(
+                f"CoinGecko returned HTTP {exc.response.status_code}"
+            )
+
+        except httpx.RequestError:
+            raise RuntimeError("Unable to connect to CoinGecko")
